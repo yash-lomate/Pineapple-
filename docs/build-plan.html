@@ -1696,7 +1696,7 @@ ask:
     <li><p><strong>Topic routes.</strong> <code>GET /courses/{id}/topics</code> (with <code>chunk_count</code> and <code>clip_count</code>). <code>PUT</code> (teacher): names must be unique within a week, then <code>replace_topics(confirmed=True)</code>, commit, enqueue <code>relink_topics</code>, and return the list.</p></li>
     <li><p><strong>Ask graph.</strong> <code>ask/graph.py</code>, a LangGraph graph with state <code>{ask_id, course_id, question, chunks, result}</code>:</p>
       <ul>
-        <li><code>retrieve</code>: <code>get_retriever().search(course_id, query, k=6)</code>. When the question comes with an <code>exercise_id</code>, build <code>query</code> as the question plus the exercise's topic name and title (no model call), so a vague question like "Why does it do that?" during an outer joins exercise finds the outer joins notes. Otherwise <code>query</code> is the question. Show only the question to the model.</li>
+        <li><code>retrieve</code>: <code>get_retriever().search(course_id, question, k=6)</code>.</li>
         <li><code>gate</code>: refuse with no model call if <code>max(similarity) &lt; ASK_MIN_SIM</code>.</li>
         <li><code>answer</code>: prompt <code>ask.answer</code> (<a href="#a-prompts">13.6</a>), schema <code>AskModelOut{answerable: bool, answer: str, citations: list[str]}</code>, temperature 0.1.</li>
         <li><code>verify</code>: keep only citation ids that were in the 6 chunks; refuse if none are left or <code>answerable</code> is false.</li>
